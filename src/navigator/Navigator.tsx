@@ -1,12 +1,7 @@
 import React, {useContext} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {
-  AuthContext,
-  LoginScreen,
-  ProtectedScreen,
-  RegisterScreen,
-  LoadingScreen,
-} from '../';
+import {AuthContext, LoginScreen, RegisterScreen, LoadingScreen} from '../';
+import {ProductsNav} from './ProductsNav';
 const Stack = createStackNavigator();
 
 export const Navigator = () => {
@@ -31,7 +26,7 @@ export const Navigator = () => {
         </>
       ) : (
         <>
-          <Stack.Screen name="ProtectedScreen" component={ProtectedScreen} />
+          <ProductsNav />
         </>
       )}
     </Stack.Navigator>
