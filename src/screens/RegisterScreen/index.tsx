@@ -21,13 +21,13 @@ interface NavigationProps extends StackScreenProps<any, any> {}
 
 export const RegisterScreen = ({navigation}: NavigationProps) => {
   const {email, name, password, onChange} = useForm<InitialForm>(formState);
-  const {singIn} = useContext(AuthContext);
+  const {singUp} = useContext(AuthContext);
   const {dismiss} = Keyboard;
   const {replace} = navigation;
 
   const onRegister = async () => {
     console.log({email, password, name});
-    singIn({correo: email, password, nombre: name});
+    await singUp({correo: email, password, nombre: name});
     dismiss();
   };
 

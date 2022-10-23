@@ -23,8 +23,8 @@ export type AuthContextProps = {
   toke: string | null;
   user: User | null;
   status: userStatus;
-  singUp: (value: LoginProps) => Promise<void>;
-  singIn: (value: AuthPropsHttp) => Promise<void>;
+  singIn: (value: LoginProps) => Promise<void>;
+  singUp: (value: AuthPropsHttp) => Promise<void>;
   logout: () => void;
   removeError: () => void;
 };
@@ -56,7 +56,7 @@ export const AuthContext = createContext({} as AuthContextProps);
 export const AuthProvider = ({children}: ProviderProps) => {
   const [state, dispatch] = useReducer(AuthReducer, AuthInitialState);
 
-  const singUp = async (info: LoginProps) => {
+  const singIn = async (info: LoginProps) => {
     try {
       const {data} = await api.post<ResultLogin>('/auth/login', info);
       console.log('result result', data);
@@ -64,7 +64,7 @@ export const AuthProvider = ({children}: ProviderProps) => {
       console.log('error', error);
     }
   };
-  const singIn = async (register: AuthPropsHttp) => {
+  const singUp = async (register: AuthPropsHttp) => {
     try {
       const {data} = await api.post<ResultLogin>('/usuario', {
         ...register,

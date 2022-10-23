@@ -22,11 +22,11 @@ export const LoadingScreen = ({navigation}: NavigationProps) => {
   const {dismiss} = Keyboard;
   const {replace} = navigation;
 
-  const {singUp} = useContext(AuthContext);
+  const {singIn} = useContext(AuthContext);
 
   const onLogin = async () => {
     console.log('res', {email, password});
-    const result = await singUp({correo: email, password});
+    const result = await singIn({correo: email, password});
     console.log('result', result);
     dismiss();
   };
