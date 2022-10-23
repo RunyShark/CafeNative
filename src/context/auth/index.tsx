@@ -63,20 +63,25 @@ export const AuthProvider = ({children}: ProviderProps) => {
   }, []);
 
   const checkToken = async () => {
-    const token = await getItem('token');
-    if (!token) {
+    const tokenStorage = await getItem('token');
+    if (!tokenStorage) {
       return dispatch({type: 'notAuthentication'});
     }
-    const result = api.get('/auth/', token);
-    if (result) {
-      dispatch({
-        type: 'singUp',
-        payload: {
-          token,
-          user: usuario,
-        },
-      });
+    const {
+      status,
+      data: {token, usuario},
+    } = await api.get<ResultLogin>('/auth/');
+    if (status !== 200) {
+      return dispatch({type: 'notAuthentication'});
     }
+
+    dispatch({
+      type: 'singUp',
+      payload: {
+        token,
+        user: usuario,
+      },
+    });
   };
 
   const singIn = async (info: LoginProps) => {
