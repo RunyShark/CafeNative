@@ -1,11 +1,11 @@
 import React, {useContext} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {AuthContext, LoadingScreen, ProtectedScreen, RegisterScreen} from '../';
+import {AuthContext, LoginScreen, ProtectedScreen, RegisterScreen} from '../';
 const Stack = createStackNavigator();
 
 export const Navigator = () => {
-  const {status, errorMessage} = useContext(AuthContext);
-  if (errorMessage) {
+  const {status} = useContext(AuthContext);
+  if (status === 'checking') {
   }
   return (
     <Stack.Navigator
@@ -17,7 +17,7 @@ export const Navigator = () => {
       }}>
       {status !== 'authenticated' ? (
         <>
-          <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
         </>
       ) : (

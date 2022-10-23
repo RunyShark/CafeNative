@@ -56,7 +56,7 @@ export const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthProvider = ({children}: ProviderProps) => {
   const [state, dispatch] = useReducer(AuthReducer, AuthInitialState);
-  const {setItem, getItem} = AsyncStorage;
+  const {setItem, getItem, removeItem} = AsyncStorage;
 
   useEffect(() => {
     checkToken();
@@ -131,9 +131,13 @@ export const AuthProvider = ({children}: ProviderProps) => {
       }
     }
   };
-  const logout = () => {};
+
+  const logout = () => {
+    removeItem('token');
+  };
 
   const removeError = () => dispatch({type: 'removeError'});
+
   return (
     <AuthContext.Provider
       value={{
