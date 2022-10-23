@@ -3,6 +3,7 @@ import React, {createContext, useEffect, useReducer} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AuthReducer, AuthState} from './reducer';
 import {api} from '../../';
+import {StackScreenProps} from '@react-navigation/stack';
 export interface AuthPropsHttp {
   nombre: string;
   correo: string;
@@ -16,6 +17,8 @@ type Rol = 'ADMIN_ROLE' | 'USER_ROLE' | 'VENTAS_ROLE';
 export interface ProviderProps {
   children: ChildrenType;
 }
+
+interface NavigationProps extends StackScreenProps<any, any> {}
 
 export type ChildrenType = JSX.Element | JSX.Element[];
 
@@ -74,6 +77,8 @@ export const AuthProvider = ({children}: ProviderProps) => {
     if (status !== 200) {
       return dispatch({type: 'notAuthentication'});
     }
+
+    await setItem('token', tokenStorage);
 
     dispatch({
       type: 'singUp',
@@ -134,6 +139,7 @@ export const AuthProvider = ({children}: ProviderProps) => {
 
   const logout = () => {
     removeItem('token');
+    dispatch({type: 'logout'});
   };
 
   const removeError = () => dispatch({type: 'removeError'});
