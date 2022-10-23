@@ -1,10 +1,14 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Text} from 'react-native';
+
+import {Background, WhiteLogo, loginStyles} from '../../';
 
 export const LoadingScreen = () => {
   return (
-    <View>
-      <Text>LoadingScreen</Text>
-    </View>
+    <>
+      <Background />
+      <WhiteLogo />
+      <Text style={loginStyles.title}>Login</Text>
+    </>
   );
 };
