@@ -1,12 +1,21 @@
 import React, {useContext} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {AuthContext, LoginScreen, ProtectedScreen, RegisterScreen} from '../';
+import {
+  AuthContext,
+  LoginScreen,
+  ProtectedScreen,
+  RegisterScreen,
+  LoadingScreen,
+} from '../';
 const Stack = createStackNavigator();
 
 export const Navigator = () => {
   const {status} = useContext(AuthContext);
+
   if (status === 'checking') {
+    return <LoadingScreen />;
   }
+
   return (
     <Stack.Navigator
       screenOptions={{
