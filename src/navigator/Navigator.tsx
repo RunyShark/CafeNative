@@ -4,8 +4,8 @@ import {AuthContext, LoadingScreen, ProtectedScreen, RegisterScreen} from '../';
 const Stack = createStackNavigator();
 
 export const Navigator = () => {
-  const {status} = useContext(AuthContext);
-  if (status === 'checking') {
+  const {status, errorMessage} = useContext(AuthContext);
+  if (errorMessage) {
   }
   return (
     <Stack.Navigator

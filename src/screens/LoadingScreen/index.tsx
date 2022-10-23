@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import {StackScreenProps} from '@react-navigation/stack';
-import React, {useContext} from 'react';
-import {KeyboardAvoidingView, Text, View, Keyboard} from 'react-native';
+import React, {useContext, useEffect} from 'react';
+import {KeyboardAvoidingView, Text, View, Keyboard, Alert} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 
 import {Background, WhiteLogo, loginStyles, useForm, AuthContext} from '../../';
@@ -22,7 +23,20 @@ export const LoadingScreen = ({navigation}: NavigationProps) => {
   const {dismiss} = Keyboard;
   const {replace} = navigation;
 
-  const {singIn} = useContext(AuthContext);
+  const {singIn, errorMessage, removeError} = useContext(AuthContext);
+
+  useEffect(() => {
+    if (errorMessage.length === 0) {
+      return;
+    }
+
+    Alert.alert('Login bad:', errorMessage, [
+      {
+        text: 'ok',
+        onPress: removeError,
+      },
+    ]);
+  }, [errorMessage]);
 
   const onLogin = async () => {
     console.log('res', {email, password});
@@ -67,7 +81,10 @@ export const LoadingScreen = ({navigation}: NavigationProps) => {
             autoCorrect={false}
           />
           <View style={loginStyles.buttonContainer}>
-            <TouchableOpacity activeOpacity={0.8} style={loginStyles.button}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={loginStyles.button}
+              onPress={onLogin}>
               <Text style={loginStyles.buttonText}>Login</Text>
             </TouchableOpacity>
           </View>

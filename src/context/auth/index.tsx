@@ -71,7 +71,10 @@ export const AuthProvider = ({children}: ProviderProps) => {
       });
     } catch (error: any) {
       if (error.response.data.msg) {
-        dispatch({type: 'addError', payload: error.response.data.msg});
+        dispatch({
+          type: 'addError',
+          payload: error.response.data.msg || 'Bad information',
+        });
       }
     }
   };
@@ -92,13 +95,16 @@ export const AuthProvider = ({children}: ProviderProps) => {
       });
     } catch (error: any) {
       if (error.response.data.msg) {
-        dispatch({type: 'addError', payload: error.response.data.msg});
+        dispatch({
+          type: 'addError',
+          payload: error.response.data.msg || 'Bad information',
+        });
       }
     }
   };
   const logout = () => {};
-  const removeError = () => {};
 
+  const removeError = () => dispatch({type: 'removeError'});
   return (
     <AuthContext.Provider
       value={{
