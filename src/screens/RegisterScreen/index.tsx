@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import {StackScreenProps} from '@react-navigation/stack';
-import React, {useContext} from 'react';
-import {KeyboardAvoidingView, Text, View, Keyboard} from 'react-native';
+import React, {useContext, useEffect} from 'react';
+import {KeyboardAvoidingView, Text, View, Keyboard, Alert} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 
 import {WhiteLogo, loginStyles, useForm, AuthContext} from '../../';
@@ -12,21 +13,33 @@ interface InitialForm {
   password: string;
 }
 const formState: InitialForm = {
-  name: '',
-  email: '',
-  password: '',
+  name: 'El Tona',
+  email: 'corre@corre.com',
+  password: '123123',
 };
 
 interface NavigationProps extends StackScreenProps<any, any> {}
 
 export const RegisterScreen = ({navigation}: NavigationProps) => {
   const {email, name, password, onChange} = useForm<InitialForm>(formState);
-  const {singUp} = useContext(AuthContext);
+  const {singUp, errorMessage, removeError} = useContext(AuthContext);
   const {dismiss} = Keyboard;
   const {replace} = navigation;
 
+  useEffect(() => {
+    if (errorMessage.length === 0) {
+      return;
+    }
+
+    Alert.alert('Login bad:', errorMessage, [
+      {
+        text: 'ok',
+        onPress: removeError,
+      },
+    ]);
+  }, [errorMessage]);
+
   const onRegister = async () => {
-    console.log({email, password, name});
     await singUp({correo: email, password, nombre: name});
     dismiss();
   };
@@ -81,7 +94,10 @@ export const RegisterScreen = ({navigation}: NavigationProps) => {
           />
 
           <View style={loginStyles.buttonContainer}>
-            <TouchableOpacity activeOpacity={0.8} style={loginStyles.button}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={loginStyles.button}
+              onPress={onRegister}>
               <Text style={loginStyles.buttonText}>Create account</Text>
             </TouchableOpacity>
           </View>

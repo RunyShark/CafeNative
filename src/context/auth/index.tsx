@@ -43,7 +43,7 @@ export interface User {
   rol: string;
   estado: boolean;
   google: boolean;
-  hombre: string;
+  nombre: string;
   correo: string;
   img?: string;
 }
@@ -116,10 +116,13 @@ export const AuthProvider = ({children}: ProviderProps) => {
     try {
       const {
         data: {token, usuario},
-      } = await api.post<ResultLogin>('/usuario', {
+      } = await api.post<ResultLogin>('/usuarios', {
         ...register,
         rol: 'USER_ROLE',
       });
+      console.log('register', {token, usuario});
+      await setItem('token', token);
+
       dispatch({
         type: 'singUp',
         payload: {
@@ -137,8 +140,8 @@ export const AuthProvider = ({children}: ProviderProps) => {
     }
   };
 
-  const logout = () => {
-    removeItem('token');
+  const logout = async () => {
+    await removeItem('token');
     dispatch({type: 'logout'});
   };
 

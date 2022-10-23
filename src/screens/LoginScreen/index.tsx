@@ -40,9 +40,7 @@ export const LoginScreen = ({navigation}: NavigationProps) => {
   }, [errorMessage]);
 
   const onLogin = async () => {
-    console.log('res', {email, password});
-    const result = await singIn({correo: email, password});
-    console.log('result', result);
+    await singIn({correo: email, password});
     dismiss();
   };
 
