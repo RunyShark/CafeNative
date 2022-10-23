@@ -104,12 +104,10 @@ export const AuthProvider = ({children}: ProviderProps) => {
       });
       await setItem('token', token);
     } catch (error: any) {
-      if (error.response.data.msg) {
-        dispatch({
-          type: 'addError',
-          payload: error.response.data.msg || 'Bad information',
-        });
-      }
+      dispatch({
+        type: 'addError',
+        payload: error.response.data.msg || 'Bad information',
+      });
     }
   };
   const singUp = async (register: AuthPropsHttp) => {
