@@ -4,7 +4,7 @@ import React from 'react';
 import {KeyboardAvoidingView, Text, View, Keyboard} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 
-import {Background, WhiteLogo, loginStyles, useForm} from '../../';
+import {WhiteLogo, loginStyles, useForm} from '../../';
 
 interface InitialForm {
   name: string;
@@ -32,31 +32,30 @@ export const RegisterScreen = ({navigation}: NavigationProps) => {
   const {dismiss} = Keyboard;
   const {replace} = navigation;
 
-  const onLogin = () => {
-    console.log({email, password, name});
+  const onRegister = () => {
+    console.log({email, password, repeatPassword, name});
     dismiss();
   };
 
   return (
     <>
-      <Background />
-      <KeyboardAvoidingView style={{flex: 1}}>
+      <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#5856D6'}}>
         <View style={loginStyles.formContainer}>
           <WhiteLogo />
-          <Text style={loginStyles.title}>Login</Text>
+          <Text style={loginStyles.title}>Register</Text>
           <Text style={loginStyles.label}>name:</Text>
           <TextInput
-            placeholder="Name"
+            placeholder="Insert your name"
             placeholderTextColor={'rgba(255,255,255,0.4)'}
             keyboardType="default"
             underlineColorAndroid={'white'}
             style={loginStyles.inputField}
             selectionColor="white"
-            autoCapitalize="none"
+            autoCapitalize="words"
+            autoCorrect={false}
             onChangeText={value => onChange(value, 'name')}
             value={name}
-            onSubmitEditing={onLogin}
-            autoCorrect={false}
+            onSubmitEditing={onRegister}
           />
           <Text style={loginStyles.label}>Email:</Text>
           <TextInput
@@ -69,7 +68,7 @@ export const RegisterScreen = ({navigation}: NavigationProps) => {
             autoCapitalize="none"
             onChangeText={value => onChange(value, 'email')}
             value={email}
-            onSubmitEditing={onLogin}
+            onSubmitEditing={onRegister}
             autoCorrect={false}
           />
           <Text style={loginStyles.label}>Password:</Text>
@@ -82,7 +81,7 @@ export const RegisterScreen = ({navigation}: NavigationProps) => {
             onChangeText={value => onChange(value, 'password')}
             value={password}
             secureTextEntry
-            onSubmitEditing={onLogin}
+            onSubmitEditing={onRegister}
             autoCapitalize="none"
             autoCorrect={false}
           />
@@ -96,17 +95,17 @@ export const RegisterScreen = ({navigation}: NavigationProps) => {
             onChangeText={value => onChange(value, 'repeatPassword')}
             value={repeatPassword}
             secureTextEntry
-            onSubmitEditing={onLogin}
+            onSubmitEditing={onRegister}
             autoCapitalize="none"
             autoCorrect={false}
           />
           <View style={loginStyles.buttonContainer}>
             <TouchableOpacity activeOpacity={0.8} style={loginStyles.button}>
-              <Text style={loginStyles.buttonText}>Register</Text>
+              <Text style={loginStyles.buttonText}>Create account</Text>
             </TouchableOpacity>
           </View>
 
-          <View style={loginStyles.newUserContainer}>
+          <View style={loginStyles.buttonReturn}>
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => replace('LoadingScreen')}>
