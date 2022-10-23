@@ -49,7 +49,7 @@ export const ProductsProvider = ({children}: ChildrenType) => {
         categoryId,
         productName,
       });
-      setProductos([data]);
+      setProductos([]);
     } catch (error) {
       console.log('error', error);
     }

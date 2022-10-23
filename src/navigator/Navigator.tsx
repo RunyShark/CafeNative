@@ -26,7 +26,7 @@ export const Navigator = () => {
         </>
       ) : (
         <>
-          <ProductsNav />
+          <Stack.Screen name="ProductsNav" component={ProductsNav} />
         </>
       )}
     </Stack.Navigator>
