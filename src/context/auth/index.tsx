@@ -4,9 +4,9 @@ export interface ProviderProps {
   children: ChildrenType;
 }
 
-type ChildrenType = JSX.Element | JSX.Element[];
+export type ChildrenType = JSX.Element | JSX.Element[];
 
-type AuthContextProps = {
+export type AuthContextProps = {
   errorMessage: string;
   toke: string | null;
   user: User | null;
