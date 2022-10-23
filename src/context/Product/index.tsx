@@ -1,5 +1,13 @@
-import React, {createContext} from 'react';
-import {ChildrenType, ProductsResponse} from '../../';
+import React, {createContext, useState} from 'react';
+import {ChildrenType, ProductsResponse, api, Categoria} from '../../';
+
+interface ResponseAddProduct {
+  precio: number;
+  _id: string;
+  nombre: string;
+  categoria: Categoria;
+  usuario: Categoria;
+}
 
 interface CrudProps {
   categoryId: string;
@@ -27,16 +35,27 @@ type ProductsContextProps = {
   uploadImage: ({data, productId}: UploadImg) => Promise<void>; //todo change any
 };
 
-export const ProductsContext = createContext({} as ProductsResponse);
+export const ProductsContext = createContext({} as ProductsContextProps);
 
 export const ProductsProvider = ({children}: ChildrenType) => {
-  const loadProducts = () => {};
+  const [productos, setProductos] = useState<ProductsResponse[]>([]);
 
-  const addProducts = ({categoryId, productName}: AddProduct) => {
+  const loadProducts = async () => {};
+
+  const addProducts = async ({categoryId, productName}: AddProduct) => {
     console.log('addProduct', {categoryId, productName});
+    try {
+      const {data} = await api.post<ResponseAddProduct>('/productos', {
+        categoryId,
+        productName,
+      });
+      setProductos([data]);
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
-  const updateProducts = ({
+  const updateProducts = async ({
     categoryId,
     productName,
     productId,
@@ -44,20 +63,21 @@ export const ProductsProvider = ({children}: ChildrenType) => {
     console.log('updateProduct', {categoryId, productName, productId});
   };
 
-  const deleteProducts = ({productId}: ProductById) => {
+  const deleteProducts = async ({productId}: ProductById) => {
     console.log('deleteProducts', {productId});
   };
 
-  const loadProductById = ({productId}: ProductById) => {
-    console.log('loadProductById', {productId});
+  const loadProductById = async ({productId}: ProductById) => {
+    throw new Error('Not implemented');
   };
-  const uploadImage = ({data, productId}: UploadImg) => {
+  const uploadImage = async ({data, productId}: UploadImg) => {
     console.log('loadProductById', {data, productId});
   };
 
   return (
     <ProductsContext.Provider
       value={{
+        productos,
         loadProducts,
         addProducts,
         updateProducts,
