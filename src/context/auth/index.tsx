@@ -1,5 +1,5 @@
-import React, {createContext} from 'react';
-
+import React, {createContext, useReducer} from 'react';
+import {AuthReducer, AuthState} from './reducer';
 export interface ProviderProps {
   children: ChildrenType;
 }
@@ -29,8 +29,33 @@ export interface User {
   img?: string;
 }
 
+const AuthInitialState: AuthState = {
+  status: 'checking',
+  user: null,
+  toke: null,
+  errorMessage: '',
+};
+
 export const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthProvider = ({children}: ProviderProps) => {
-  return <AuthContext.Provider value={{}}>{children}</AuthContext.Provider>;
+  const [state, dispatch] = useReducer(AuthReducer, AuthInitialState);
+
+  const singUp = () => {};
+  const singIn = () => {};
+  const logout = () => {};
+  const removeError = () => {};
+
+  return (
+    <AuthContext.Provider
+      value={{
+        ...state,
+        singUp,
+        singIn,
+        logout,
+        removeError,
+      }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
