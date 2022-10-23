@@ -6,7 +6,7 @@ export interface AuthState
     'singUp' | 'singIn' | 'logout' | 'removeError'
   > {}
 
-type AuthAction =
+export type AuthAction =
   | {
       type: 'singUp';
       payload: {token: string; user: User};

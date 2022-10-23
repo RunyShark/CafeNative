@@ -1,5 +1,5 @@
 import React, {createContext, useReducer} from 'react';
-import {AuthReducer, AuthState} from './reducer';
+import {AuthReducer, AuthState, AuthAction} from './reducer';
 import {api} from '../../';
 
 export interface AuthPropsHttp {
@@ -58,21 +58,42 @@ export const AuthProvider = ({children}: ProviderProps) => {
 
   const singIn = async (info: LoginProps) => {
     try {
-      const {data} = await api.post<ResultLogin>('/auth/login', info);
-      console.log('result result', data);
-    } catch (error) {
-      console.log('error', error);
+      const {
+        data: {token, usuario},
+      } = await api.post<ResultLogin>('/auth/login', info);
+
+      dispatch({
+        type: 'singUp',
+        payload: {
+          token,
+          user: usuario,
+        },
+      });
+    } catch (error: any) {
+      if (error.response.data.msg) {
+        dispatch({type: 'addError', payload: error.response.data.msg});
+      }
     }
   };
   const singUp = async (register: AuthPropsHttp) => {
     try {
-      const {data} = await api.post<ResultLogin>('/usuario', {
+      const {
+        data: {token, usuario},
+      } = await api.post<ResultLogin>('/usuario', {
         ...register,
         rol: 'USER_ROLE',
       });
-      console.log('result result', data);
-    } catch (error) {
-      console.log('error', error);
+      dispatch({
+        type: 'singUp',
+        payload: {
+          token,
+          user: usuario,
+        },
+      });
+    } catch (error: any) {
+      if (error.response.data.msg) {
+        dispatch({type: 'addError', payload: error.response.data.msg});
+      }
     }
   };
   const logout = () => {};
