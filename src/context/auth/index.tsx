@@ -2,10 +2,16 @@ import React, {createContext, useReducer} from 'react';
 import {AuthReducer, AuthState} from './reducer';
 import {api} from '../../';
 
-export interface LoginProps {
-  email: string;
+export interface AuthPropsHttp {
+  nombre: string;
+  correo: string;
   password: string;
+  rol?: Rol;
 }
+
+type LoginProps = Omit<AuthPropsHttp, 'nombre' | 'rol'>;
+
+type Rol = 'ADMIN_ROLE' | 'USER_ROLE' | 'VENTAS_ROLE';
 export interface ProviderProps {
   children: ChildrenType;
 }
@@ -18,7 +24,7 @@ export type AuthContextProps = {
   user: User | null;
   status: userStatus;
   singUp: (value: LoginProps) => Promise<void>;
-  singIn: () => void;
+  singIn: (value: AuthPropsHttp) => Promise<void>;
   logout: () => void;
   removeError: () => void;
 };
@@ -52,14 +58,23 @@ export const AuthProvider = ({children}: ProviderProps) => {
 
   const singUp = async (info: LoginProps) => {
     try {
-      const res = await api.post<ResultLogin>('/auth/login', info);
-      console.log('result', res);
-      // dispatch();
+      const {data} = await api.post<ResultLogin>('/auth/login', info);
+      console.log('result result', data);
     } catch (error) {
       console.log('error', error);
     }
   };
-  const singIn = () => {};
+  const singIn = async (register: AuthPropsHttp) => {
+    try {
+      const {data} = await api.post<ResultLogin>('/usuario', {
+        ...register,
+        rol: 'USER_ROLE',
+      });
+      console.log('result result', data);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
   const logout = () => {};
   const removeError = () => {};
 

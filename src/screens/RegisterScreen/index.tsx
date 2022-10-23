@@ -1,39 +1,33 @@
 /* eslint-disable react-native/no-inline-styles */
 import {StackScreenProps} from '@react-navigation/stack';
-import React from 'react';
+import React, {useContext} from 'react';
 import {KeyboardAvoidingView, Text, View, Keyboard} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 
-import {WhiteLogo, loginStyles, useForm} from '../../';
+import {WhiteLogo, loginStyles, useForm, AuthContext} from '../../';
 
 interface InitialForm {
   name: string;
   email: string;
   password: string;
-  repeatPassword: string;
 }
 const formState: InitialForm = {
   name: '',
   email: '',
   password: '',
-  repeatPassword: '',
 };
 
 interface NavigationProps extends StackScreenProps<any, any> {}
 
 export const RegisterScreen = ({navigation}: NavigationProps) => {
-  const {
-    email,
-    name,
-    repeatPassword,
-    password,
-    onChange,
-  } = useForm<InitialForm>(formState);
+  const {email, name, password, onChange} = useForm<InitialForm>(formState);
+  const {singIn} = useContext(AuthContext);
   const {dismiss} = Keyboard;
   const {replace} = navigation;
 
-  const onRegister = () => {
-    console.log({email, password, repeatPassword, name});
+  const onRegister = async () => {
+    console.log({email, password, name});
+    singIn({correo: email, password, nombre: name});
     dismiss();
   };
 
@@ -85,20 +79,7 @@ export const RegisterScreen = ({navigation}: NavigationProps) => {
             autoCapitalize="none"
             autoCorrect={false}
           />
-          <Text style={loginStyles.label}>Repeat password:</Text>
-          <TextInput
-            placeholder="****"
-            placeholderTextColor={'rgba(255,255,255,0.4)'}
-            underlineColorAndroid={'white'}
-            style={loginStyles.inputField}
-            selectionColor="white"
-            onChangeText={value => onChange(value, 'repeatPassword')}
-            value={repeatPassword}
-            secureTextEntry
-            onSubmitEditing={onRegister}
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
+
           <View style={loginStyles.buttonContainer}>
             <TouchableOpacity activeOpacity={0.8} style={loginStyles.button}>
               <Text style={loginStyles.buttonText}>Create account</Text>

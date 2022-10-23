@@ -1,18 +1,18 @@
 /* eslint-disable react-native/no-inline-styles */
 import {StackScreenProps} from '@react-navigation/stack';
-import React from 'react';
+import React, {useContext} from 'react';
 import {KeyboardAvoidingView, Text, View, Keyboard} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 
-import {Background, WhiteLogo, loginStyles, useForm} from '../../';
+import {Background, WhiteLogo, loginStyles, useForm, AuthContext} from '../../';
 
 interface InitialForm {
   email: string;
   password: string;
 }
 const formState: InitialForm = {
-  email: '',
-  password: '',
+  email: 'test1@test.com',
+  password: '123456',
 };
 
 interface NavigationProps extends StackScreenProps<any, any> {}
@@ -22,8 +22,12 @@ export const LoadingScreen = ({navigation}: NavigationProps) => {
   const {dismiss} = Keyboard;
   const {replace} = navigation;
 
-  const onLogin = () => {
-    console.log({email, password});
+  const {singUp} = useContext(AuthContext);
+
+  const onLogin = async () => {
+    console.log('res', {email, password});
+    const result = await singUp({correo: email, password});
+    console.log('result', result);
     dismiss();
   };
 
