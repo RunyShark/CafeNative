@@ -1,5 +1,5 @@
 import React, {createContext, useReducer} from 'react';
-import {AuthReducer, AuthState, AuthAction} from './reducer';
+import {AuthReducer, AuthState} from './reducer';
 import {api} from '../../';
 
 export interface AuthPropsHttp {

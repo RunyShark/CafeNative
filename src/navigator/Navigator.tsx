@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {LoadingScreen, LoginScreen, ProtectedScreen, RegisterScreen} from '../';
+import {AuthContext, LoadingScreen, ProtectedScreen, RegisterScreen} from '../';
 const Stack = createStackNavigator();
 
 export const Navigator = () => {
+  const {status} = useContext(AuthContext);
+  if (status === 'checking') {
+  }
   return (
     <Stack.Navigator
       screenOptions={{
@@ -12,10 +15,16 @@ export const Navigator = () => {
           backgroundColor: 'white',
         },
       }}>
-      <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
-      <Stack.Screen name="LoginScreen" component={LoginScreen} />
-      <Stack.Screen name="ProtectedScreen" component={ProtectedScreen} />
-      <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+      {status !== 'authenticated' ? (
+        <>
+          <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
+          <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+        </>
+      ) : (
+        <>
+          <Stack.Screen name="ProtectedScreen" component={ProtectedScreen} />
+        </>
+      )}
     </Stack.Navigator>
   );
 };
