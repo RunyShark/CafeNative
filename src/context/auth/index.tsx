@@ -1,7 +1,8 @@
-import React, {createContext, useReducer} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {createContext, useEffect, useReducer} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AuthReducer, AuthState} from './reducer';
 import {api} from '../../';
-
 export interface AuthPropsHttp {
   nombre: string;
   correo: string;
@@ -55,6 +56,28 @@ export const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthProvider = ({children}: ProviderProps) => {
   const [state, dispatch] = useReducer(AuthReducer, AuthInitialState);
+  const {setItem, getItem} = AsyncStorage;
+
+  useEffect(() => {
+    checkToken();
+  }, []);
+
+  const checkToken = async () => {
+    const token = await getItem('token');
+    if (!token) {
+      return dispatch({type: 'notAuthentication'});
+    }
+    const result = api.get('/auth/', token);
+    if (result) {
+      dispatch({
+        type: 'singUp',
+        payload: {
+          token,
+          user: usuario,
+        },
+      });
+    }
+  };
 
   const singIn = async (info: LoginProps) => {
     try {
@@ -69,6 +92,7 @@ export const AuthProvider = ({children}: ProviderProps) => {
           user: usuario,
         },
       });
+      await setItem('token', token);
     } catch (error: any) {
       if (error.response.data.msg) {
         dispatch({

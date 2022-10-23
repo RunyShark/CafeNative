@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
-import {StackScreenProps} from '@react-navigation/stack';
 import React, {useContext, useEffect} from 'react';
+import {StackScreenProps} from '@react-navigation/stack';
+
 import {KeyboardAvoidingView, Text, View, Keyboard, Alert} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 
