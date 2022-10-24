@@ -9,4 +9,12 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 20,
   },
+  productName: {
+    fontSize: 20,
+  },
+  itemSeparator: {
+    borderBottomWidth: 2,
+    marginTop: 5,
+    borderBottomColor: 'rgba(0,0,0,0.1)',
+  },
 });

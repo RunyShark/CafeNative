@@ -29,7 +29,7 @@ type UpdateProduct = Omit<CrudProps, 'data'>;
 type UploadImg = Omit<CrudProps, 'categoryId' | 'productName'>;
 
 export type ProductsContextProps = {
-  products: ProductsResponse[];
+  products: Producto[];
   loadProducts: () => Promise<void>;
   addProducts: ({categoryId, productName}: AddProduct) => Promise<void>;
   updateProducts: ({
@@ -45,7 +45,7 @@ export type ProductsContextProps = {
 export const ProductsContext = createContext({} as ProductsContextProps);
 
 export const ProductsProvider = ({children}: ProviderProps) => {
-  const [productos, setProductos] = useState<Producto[]>([]);
+  const [products, setProducts] = useState<Producto[]>([]);
 
   useEffect(() => {
     loadProducts();
@@ -55,9 +55,9 @@ export const ProductsProvider = ({children}: ProviderProps) => {
     try {
       const {
         data: {productos},
-      } = await api.get<ProductsResponse>('/productos');
+      } = await api.get<ProductsResponse>('/productos?limit=10');
 
-      setProductos([...productos, ...productos]);
+      setProducts([...productos]);
     } catch (error) {
       console.log('error', error);
     }
@@ -69,7 +69,7 @@ export const ProductsProvider = ({children}: ProviderProps) => {
         categoryId,
         productName,
       });
-      setProductos([]);
+      setProducts();
     } catch (error) {
       console.log('error', error);
     }
@@ -97,7 +97,7 @@ export const ProductsProvider = ({children}: ProviderProps) => {
   return (
     <ProductsContext.Provider
       value={{
-        productos,
+        products,
         loadProducts,
         addProducts,
         updateProducts,
