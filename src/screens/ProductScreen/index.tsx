@@ -1,8 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {StackScreenProps} from '@react-navigation/stack';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Text, View} from 'react-native';
+import {Picker} from '@react-native-picker/picker';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
 import {ProductsStackParams} from '../../navigator/ProductsNav';
 import {styles} from './style';
@@ -10,6 +11,7 @@ interface NavigationProps
   extends StackScreenProps<ProductsStackParams, 'ProductScreen'> {}
 
 export const ProductScreen = ({route, navigation}: NavigationProps) => {
+  const [selectedLanguage, setSelectedLanguage] = useState();
   const {params} = route;
   const {setOptions} = navigation;
 
@@ -27,6 +29,14 @@ export const ProductScreen = ({route, navigation}: NavigationProps) => {
         <TextInput placeholder="Product" style={styles.textInput} />
 
         <Text style={styles.label}>Select category:</Text>
+        <Picker
+          selectedValue={selectedLanguage}
+          onValueChange={(itemValue, itemIndex) =>
+            setSelectedLanguage(itemValue)
+          }>
+          <Picker.Item label="Java" value="java" />
+          <Picker.Item label="JavaScript" value="js" />
+        </Picker>
         <Button title="save" onPress={() => {}} color="#5856D6" />
         <View style={styles.subView}>
           <Button title="Camera" onPress={() => {}} color="#5856D6" />
