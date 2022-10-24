@@ -17,4 +17,7 @@ export const styles = StyleSheet.create({
     marginTop: 5,
     borderBottomColor: 'rgba(0,0,0,0.1)',
   },
+  options: {
+    marginRight: 20,
+  },
 });

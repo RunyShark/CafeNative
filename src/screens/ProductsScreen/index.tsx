@@ -1,4 +1,5 @@
-import React, {useContext} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useContext, useEffect} from 'react';
 import {Button, FlatList, Text, View} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -17,9 +18,22 @@ interface NavigationProps
 export const ProductsScreen = ({navigation}: NavigationProps) => {
   const {user, logout} = useContext<AuthContextProps>(AuthContext);
   const {products} = useContext<ProductsContextProps>(ProductsContext);
-  const {navigate} = navigation;
+  const {navigate, setOptions} = navigation;
 
   //todo Pull to refresh
+
+  useEffect(() => {
+    setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.options}
+          onPress={() => navigate('ProductScreen', {name: 'New Product'})}>
+          <Text>Add </Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
