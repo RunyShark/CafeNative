@@ -31,9 +31,7 @@ export const ProductScreen = ({route, navigation}: NavigationProps) => {
         <Text style={styles.label}>Select category:</Text>
         <Picker
           selectedValue={selectedLanguage}
-          onValueChange={(itemValue, itemIndex) =>
-            setSelectedLanguage(itemValue)
-          }>
+          onValueChange={itemValue => setSelectedLanguage(itemValue)}>
           <Picker.Item label="Java" value="java" />
           <Picker.Item label="JavaScript" value="js" />
         </Picker>
