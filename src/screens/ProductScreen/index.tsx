@@ -7,11 +7,13 @@ import {Picker} from '@react-native-picker/picker';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
 import {ProductsStackParams} from '../../navigator/ProductsNav';
 import {styles} from './style';
+import {useGetCategorys} from '../../';
 interface NavigationProps
   extends StackScreenProps<ProductsStackParams, 'ProductScreen'> {}
 
 export const ProductScreen = ({route, navigation}: NavigationProps) => {
   const [selectedLanguage, setSelectedLanguage] = useState();
+  const {category} = useGetCategorys();
   const {params} = route;
   const {setOptions} = navigation;
 
@@ -32,8 +34,9 @@ export const ProductScreen = ({route, navigation}: NavigationProps) => {
         <Picker
           selectedValue={selectedLanguage}
           onValueChange={itemValue => setSelectedLanguage(itemValue)}>
-          <Picker.Item label="Java" value="java" />
-          <Picker.Item label="JavaScript" value="js" />
+          {category.map(({_id, nombre}) => (
+            <Picker.Item key={_id} label={nombre} value={nombre} />
+          ))}
         </Picker>
         <Button title="save" onPress={() => {}} color="#5856D6" />
         <View style={styles.subView}>
