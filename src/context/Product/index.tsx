@@ -1,5 +1,12 @@
-import React, {createContext, useState} from 'react';
-import {ChildrenType, ProductsResponse, api, Categoria} from '../../';
+import React, {createContext, useEffect, useState} from 'react';
+import {
+  ChildrenType,
+  ProductsResponse,
+  api,
+  Categoria,
+  Producto,
+  ProviderProps,
+} from '../../';
 
 interface ResponseAddProduct {
   precio: number;
@@ -21,7 +28,7 @@ type ProductById = Omit<CrudProps, 'categoryId' | 'productName' | 'data'>;
 type UpdateProduct = Omit<CrudProps, 'data'>;
 type UploadImg = Omit<CrudProps, 'categoryId' | 'productName'>;
 
-type ProductsContextProps = {
+export type ProductsContextProps = {
   products: ProductsResponse[];
   loadProducts: () => Promise<void>;
   addProducts: ({categoryId, productName}: AddProduct) => Promise<void>;
@@ -37,13 +44,26 @@ type ProductsContextProps = {
 
 export const ProductsContext = createContext({} as ProductsContextProps);
 
-export const ProductsProvider = ({children}: ChildrenType) => {
-  const [productos, setProductos] = useState<ProductsResponse[]>([]);
+export const ProductsProvider = ({children}: ProviderProps) => {
+  const [productos, setProductos] = useState<Producto[]>([]);
 
-  const loadProducts = async () => {};
+  useEffect(() => {
+    loadProducts();
+  }, []);
+
+  const loadProducts = async () => {
+    try {
+      const {
+        data: {productos},
+      } = await api.get<ProductsResponse>('/productos');
+
+      setProductos([...productos, ...productos]);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 
   const addProducts = async ({categoryId, productName}: AddProduct) => {
-    console.log('addProduct', {categoryId, productName});
     try {
       const {data} = await api.post<ResponseAddProduct>('/productos', {
         categoryId,
